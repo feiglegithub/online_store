@@ -1,8 +1,8 @@
 <template>
   <el-container>
-    <el-header style="line-height:5;text-align:center">管理后台</el-header>
+    <el-header style="line-height: 5; text-align: center">管理后台</el-header>
     <el-container>
-      <el-aside width="200px">
+      <el-aside>
         <el-menu
           default-active="2"
           class="el-menu-vertical-demo"
@@ -22,7 +22,7 @@
           </el-submenu>
         </el-menu>
       </el-aside>
-      <el-main style="height: calc(100vh - 60px)">
+      <el-main>
         <router-view />
       </el-main>
     </el-container>
@@ -40,3 +40,6 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+</style>

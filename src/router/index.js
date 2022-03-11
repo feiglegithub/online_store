@@ -7,10 +7,12 @@ export default new Router({
   routes: [
     {
       path: '/mall',
+      name: 'mall',
       component: () => import('@/views/mall/Index.vue'),
       children: [
         {
           path: '/classify',
+          name: 'classify',
           component: () => import('@/views/mall/Classify.vue')
         }
       ]
@@ -18,19 +20,25 @@ export default new Router({
 
     {
       path: '/search',
+      name: 'search',
       component: () => import('@/views/mall/Search.vue')
     },
 
     {
       path: '/commodityList/:primary/:second',
+      name: 'commodityList',
       component: () => import('@/views/mall/CommodityList.vue'),
-      props: true
+      props: true,
+      meta: {
+        keepAlive: true
+      }
     },
 
     {
       path: '/commodityDetails/:id',
+      name: 'commodityDetails',
       component: () => import('@/views/mall/CommodityDetails.vue'),
-      props: true
+      props: true,
     },
 
 

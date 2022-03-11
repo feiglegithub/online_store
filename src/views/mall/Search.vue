@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div class="header">
+    <div
+      class="header"
+      style="position: fixed; top: 0px; width: 100%; z-index: 999;background:white"
+    >
       <van-icon
         name="arrow-left"
         size="30px"
@@ -37,11 +40,13 @@
         搜索
       </div>
     </div>
+
     <van-list
       v-model="loading"
       :finished="finished"
       finished-text="没有更多了"
       @load="onLoad"
+      style="margin-top: 40px"
     >
       <van-grid :column-num="2" :border="false">
         <van-grid-item
@@ -55,7 +60,7 @@
             }`"
             fit="fill"
             width="100%"
-            height="100%"
+            height="150px"
           />{{ item.name }}
         </van-grid-item>
       </van-grid>

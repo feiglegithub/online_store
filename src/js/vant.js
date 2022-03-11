@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import {
     Tabbar, TabbarItem, Icon, Field, Search, Sidebar, SidebarItem,
-    Grid, GridItem, NavBar,List,Cell,Swipe,SwipeItem,Lazyload,Toast,Image
+    Grid, GridItem, NavBar,List,Cell,Swipe,SwipeItem,Lazyload,Toast,Image,PullRefresh
 } from 'vant';
 
 Vue.use(Tabbar);
@@ -21,3 +21,4 @@ Vue.use(SwipeItem);
 Vue.use(Lazyload);
 Vue.use(Toast);
 Vue.use(Image);
+Vue.use(PullRefresh);

@@ -26,6 +26,11 @@
 </template>
 <script>
 export default {
+  activated() {
+    this.images = [];
+    this.getCommodityById(this.id);
+  },
+
   props: ["id"],
   data() {
     return {
@@ -37,9 +42,7 @@ export default {
     };
   },
 
-  created() {
-    this.getCommodityById(this.id);
-  },
+  created() {},
 
   methods: {
     back() {

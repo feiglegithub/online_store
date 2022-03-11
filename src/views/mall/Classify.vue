@@ -2,7 +2,7 @@
   <div>
     <search-button to="/search"></search-button>
 
-    <van-sidebar v-model="activeKey">
+    <van-sidebar v-model="activeKey" ref="sidebar">
       <van-sidebar-item
         v-for="(item, index) in primaryClassification"
         :title="item.name"
@@ -11,7 +11,7 @@
       />
     </van-sidebar>
 
-    <van-grid column-num="3">
+    <van-grid column-num="3" ref="grid">
       <van-grid-item
         v-for="(item, index) in secondClassification"
         :text="item.name"
@@ -23,15 +23,26 @@
 </template>
 <script>
 export default {
+  activated() {
+    this.$refs.sidebar.$el.scrollTop = this.sidebarScroll;
+    this.$refs.grid.$el.scrollTop = this.gridScroll;
+  },
+
   data() {
     return {
       activeKey: 0,
       primaryClassification: [],
       secondClassification: [],
       selectPrimary: "",
+      sidebarScroll: 0,
+      gridScroll: 0,
     };
   },
   methods: {
+    scroll() {
+      console.log("scroll");
+    },
+
     getAllPrimaryClassification() {
       this.axios
         .get("/primaryClassification/getAll")
@@ -81,9 +92,18 @@ export default {
   created() {
     this.getAllPrimaryClassification();
   },
+  mounted() {
+    this.$refs.grid.$el.addEventListener("scroll", () => {
+      this.gridScroll = this.$refs.grid.$el.scrollTop;
+    });
+
+    this.$refs.sidebar.$el.addEventListener("scroll", () => {
+      this.sidebarScroll = this.$refs.sidebar.$el.scrollTop;
+    });
+  },
 };
 </script>
-<style>
+<style scoped>
 .van-sidebar {
   height: calc(100vh - 95px);
   float: left;

@@ -37,6 +37,7 @@
           border: 1px #ededed solid;
           border-radius: 5px;
           float: left;
+          margin: 5px;
         "
         v-for="(item, index) in commodityList"
         :key="index"
@@ -53,14 +54,17 @@
           </el-carousel-item>
         </el-carousel>
 
-        <div class="demonstration">
-          一级分类：{{ item.primaryClassification }}
+        <div class="content" style="height: 150px">
+          <div class="demonstration">
+            一级分类：{{ item.primaryClassification }}
+          </div>
+          <div class="demonstration">
+            二级分类：{{ item.secondClassification }}
+          </div>
+          <div class="demonstration">商品描述：{{ item.description }}</div>
+          <div class="demonstration">商品名称：{{ item.name }}</div>
         </div>
-        <div class="demonstration">
-          二级分类：{{ item.secondClassification }}
-        </div>
-        <div class="demonstration">商品描述：{{ item.description }}</div>
-        <div class="demonstration">商品名称：{{ item.name }}</div>
+
         <el-button-group style="width: 100%">
           <el-button
             type="primary"
@@ -78,7 +82,13 @@
       </div>
     </div>
 
-    <el-pagination background layout="prev, pager, next" :total="pages" style="clear:both">
+    <el-pagination
+      background
+      layout="prev, pager, next"
+      :total="total"
+      style="clear: both"
+      @current-change="currentChange"
+    >
     </el-pagination>
 
     <el-dialog
@@ -201,9 +211,15 @@ export default {
       editId: 0,
       page: 0,
       pages: 0,
+      total: 0,
     };
   },
   methods: {
+    currentChange(current) {
+      this.page = current;
+      this.getCommodity();
+    },
+
     handleSubmit() {
       this.fullscreenLoading = true;
 
@@ -345,6 +361,7 @@ export default {
     getCommodityByPrimary(primary) {
       let params = new URLSearchParams();
       params.append("primaryClassification", primary);
+      params.append("page", this.page);
       this.axios
         .post("/commodity/GetByPrimaryClassification", params)
         .then((res) => {
@@ -481,13 +498,13 @@ export default {
       switch (keyPath[0]) {
         case "1":
           this.axios
-            .get("/commodity/GetPages")
+            .post("/commodity/GetRows")
             .then((res) => {
               let result = res.data;
               if (result.status) {
                 this.page = 1;
-                this.pages = result.pages;
-                if (this.pages > 0) {
+                this.total = result.rows;
+                if (this.total > 0) {
                   this.getAllCommodity();
                 } else {
                   this.fullscreenLoading = false;
@@ -520,13 +537,13 @@ export default {
           params.append("primaryClassification", this.primary);
 
           this.axios
-            .post("/commodity/GetPagesByClassification1", params)
+            .post("/commodity/GetRowsByClassification1", params)
             .then((res) => {
               let result = res.data;
               if (result.status) {
                 this.page = 1;
-                this.pages = result.pages;
-                if (this.pages > 0) {
+                this.total = result.rows;
+                if (this.total > 0) {
                   this.getCommodityByPrimary(this.primary);
                 } else {
                   this.fullscreenLoading = false;
@@ -535,7 +552,7 @@ export default {
               } else {
                 this.fullscreenLoading = false;
                 this.$notify.error({
-                  title: "GetPagesByClassification1错误",
+                  title: "GetRowsByClassification1错误",
                   message: result.message,
                   duration: 0,
                 });
@@ -544,7 +561,7 @@ export default {
             .catch((err) => {
               this.fullscreenLoading = false;
               this.$notify.error({
-                title: "GetPagesByClassification1异常",
+                title: "GetRowsByClassification1异常",
                 message: err,
                 duration: 0,
               });
@@ -558,13 +575,13 @@ export default {
           params.append("secondClassification", this.second);
 
           this.axios
-            .post("/commodity/GetPagesByClassification2", params)
+            .post("/commodity/GetRowsByClassification2", params)
             .then((res) => {
               let result = res.data;
               if (result.status) {
                 this.page = 1;
-                this.pages = result.pages;
-                if (this.pages > 0) {
+                this.total = result.rows;
+                if (this.total > 0) {
                   this.getCommodityByPrimaryAndSecond(
                     this.primary,
                     this.second
@@ -576,7 +593,7 @@ export default {
               } else {
                 this.fullscreenLoading = false;
                 this.$notify.error({
-                  title: "GetPagesByClassification2错误",
+                  title: "GetRowsByClassification2错误",
                   message: result.message,
                   duration: 0,
                 });
@@ -585,7 +602,7 @@ export default {
             .catch((err) => {
               this.fullscreenLoading = false;
               this.$notify.error({
-                title: "GetPagesByClassification2异常",
+                title: "GetRowsByClassification2异常",
                 message: err,
                 duration: 0,
               });

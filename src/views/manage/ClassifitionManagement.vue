@@ -11,7 +11,7 @@
         closable
         :disable-transitions="false"
         @close="handlePrimaryClose(item.name)"
-        style="cursor: pointer"
+        style="cursor: pointer; margin-bottom: 15px"
       >
         {{ item.name }}
       </el-tag>
@@ -51,7 +51,7 @@
             closable
             :disable-transitions="false"
             @close="handleSecondClose(item.id)"
-            style="cursor: pointer"
+            style="cursor: pointer; margin-bottom: 10px"
           >
             {{ item.name }}
           </el-tag>
@@ -69,7 +69,7 @@
             v-else
             class="button-new-tag"
             size="small"
-            @click="showSecondInput"
+            @click="showSecondInput(index)"
             >+ New Tag</el-button
           >
         </el-tab-pane>
@@ -92,7 +92,6 @@ export default {
   },
 
   methods: {
-    
     getAllPrimaryClassification() {
       this.axios
         .get("/primaryClassification/getAll")
@@ -220,14 +219,15 @@ export default {
       this.inputPrimaryVisible = true;
       this.$nextTick((_) => {
         this.$refs.savePrimaryInput.$refs.input.focus();
+        console.log(this.$refs.savePrimaryInput);
       });
     },
 
-    showSecondInput() {
+    showSecondInput(index) {
       this.inputSecondVisible = true;
-      // this.$nextTick((_) => {
-      //   this.$refs.saveSecondInput.$refs.input.focus();
-      // });
+      this.$nextTick((_) => {
+        this.$refs.saveSecondInput[index].$refs.input.focus();
+      });
     },
 
     handleInputPrimaryConfirm() {
